@@ -33,21 +33,19 @@ public class ProductController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Product> postProduct(
             @RequestParam("title") String title,
-            @RequestParam("type") String type,
             @RequestParam("size") String size,
             @RequestParam("cmu") String cmu,
-            @RequestParam("location") String location,
+            @RequestParam("brand") String brand,
             @RequestParam("picture") String pictureFile
     ) {
         try {
-            log.info("Creating product ...");
+            log.info("Creating a product ...");
             // Créer un objet Product avec les données du formulaire et l'image en base64
             Product product = new Product();
             product.setTitle(title);
-            product.setType(type);
             product.setSize(size);
             product.setCmu(cmu);
-            product.setLocation(location);
+            product.setBrand(brand);
             product.setPicture(pictureFile);
 
             // Enregistrer le produit dans la base de données
@@ -69,10 +67,9 @@ public class ProductController {
     public ResponseEntity<Product> putProduct(
             @RequestParam("id") Long id,
             @RequestParam("title") String title,
-            @RequestParam("type") String type,
             @RequestParam("size") String size,
             @RequestParam("cmu") String cmu,
-            @RequestParam("location") String location,
+            @RequestParam("brand") String brand,
             @RequestParam("picture") String pictureFile
     ) {
         try {
@@ -81,10 +78,9 @@ public class ProductController {
             Product product = new Product();
             product.setId(id);
             product.setTitle(title);
-            product.setType(type);
             product.setSize(size);
             product.setCmu(cmu);
-            product.setLocation(location);
+            product.setBrand(brand);
             product.setPicture(pictureFile);
 
             // Enregistrer le produit dans la base de données

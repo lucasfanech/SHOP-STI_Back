@@ -6,10 +6,17 @@ services:
     container_name: spring-app
     ports:
       - "${SPRING_PORT}:8000"
+    volumes:
+      - /var/www/OPtiBox/SHOP-STI_Back/pdfs:/var/www/OPtiBox/SHOP-STI_Back/pdfs:z
+      - ./spring-app/src/main/resources/templates:/app/src/main/resources/templates:z
+      - ./spring-app/data/monthly-controls:/app/data/monthly-controls:z
     environment:
       SPRING_DATASOURCE_URL: "jdbc:mariadb://db:3306/${MYSQL_DATABASE}"
       SPRING_DATASOURCE_USERNAME: "${MYSQL_USER}"
       SPRING_DATASOURCE_PASSWORD: "${MYSQL_PASSWORD}"
+      PLC_URL: "${PLC_URL}"
+      PLC_USER: "${PLC_USER}"
+      PLC_PASSWORD: "${PLC_PASSWORD}"
     depends_on:
       db:
         condition: service_healthy
@@ -20,16 +27,17 @@ services:
     image: mariadb:latest
     container_name: db
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - ./docker-config/databases:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql        # ✅ Volume persistant ajouté ici
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "${MYSQL_ALLOW_EMPTY_PASSWORD}"
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_ROOT_PASSWORD: "${MYSQL_PASSWORD}"
       MARIADB_AUTO_UPGRADE: "1"
     healthcheck:
-      test: ["CMD-SHELL", "if [ -d /var/lib/mysql/moyens_levage ]; then exit 0; else exit 1; fi"] # Check if the database is up
+      test: ["CMD-SHELL", "if [ -d /var/lib/mysql/moyens_levage ]; then exit 0; else exit 1; fi"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -51,3 +59,6 @@ services:
 networks:
   optibox-shared-network:
     external: true
+
+volumes:
+  db_data:

@@ -33,10 +33,9 @@ public class ProductService {
         }
 
         existing.setTitle(product.getTitle());
-        existing.setType(product.getType());
         existing.setSize(product.getSize());
         existing.setCmu(product.getCmu());
-        existing.setLocation(product.getLocation());
+        existing.setBrand(product.getBrand());
         existing.setPicture(product.getPicture());
         // if picture == "null" or null, set picture to null
         if (existing.getPicture() == null || existing.getPicture().equals("null")) {
